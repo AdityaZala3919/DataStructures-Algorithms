@@ -1,0 +1,119 @@
+//deletion in linked list
+#include<stdio.h>
+#include<stdlib.h>
+
+struct Node
+{
+    int data;
+    struct Node *next;
+};
+
+void linkedListTraversal(struct Node *ptr);
+struct Node * deleteFirst(struct Node * head);
+struct Node * deleteAtIndex(struct Node * head, int index);
+struct Node * deleteLast(struct Node * head);
+struct Node * deleteAtValue(struct Node * head, int value);
+
+int main()
+{
+    struct Node *head;
+    struct Node *second;
+    struct Node *third;
+    struct Node *fourth;
+
+    head = (struct Node *)malloc(sizeof(struct Node));
+    second = (struct Node *)malloc(sizeof(struct Node));
+    third = (struct Node *)malloc(sizeof(struct Node));
+    fourth = (struct Node *)malloc(sizeof(struct Node));
+
+    //Link 1st & 2nd Nodes
+    head->data = 1;
+    head->next = second;
+
+    //Link 2nd & 3rd Nodes
+    second->data = 2;
+    second->next = third;
+
+    //Terminate the List at 3rd Node
+    third->data = 3;
+    third->next = fourth;
+
+    //Terminate the List at 4rd Node
+    fourth->data = 4;
+    fourth->next = NULL;
+
+    linkedListTraversal(head);
+    //head = deleteFirst(head);//deleting 1st Element of the linked list
+    //head = deleteAtIndex(head, 2);//deleting element at a given index of the linked list
+    //head = deleteLast(head);//delete last element of the linked list
+    head = deleteAtValue(head, 3);//deleting element with a given value of the linked list
+    printf("\n");
+    linkedListTraversal(head);
+    
+    return 0;
+}
+
+void linkedListTraversal(struct Node *ptr)
+{
+    int c=0;
+    while(ptr!=NULL)
+    {
+        printf("\nElement %d: %d",c,ptr->data);
+        ptr = ptr->next;
+        c++;
+    }
+}
+
+struct Node * deleteFirst(struct Node * head)
+{
+    struct Node * ptr = head;
+    head = head->next;
+    free(ptr);
+    return head;
+}
+
+struct Node * deleteAtIndex(struct Node * head, int index)
+{
+    struct Node * p = head;
+    struct Node * q = head->next;
+    for(int i=0;i<index-1;i++)
+    {
+        p = p->next;
+        q = q->next;
+    }
+    p->next = q->next;
+    free(q);
+    return(head);
+}
+
+struct Node * deleteLast(struct Node * head)
+{
+    struct Node * p = head;
+    struct Node * q = head->next;
+    while(q->next!=NULL)
+    {
+        p = p->next;
+        q = q->next;
+    }
+    p->next = NULL;
+    free(q);
+    return(head);
+}
+
+struct Node * deleteAtValue(struct Node * head, int value)
+{
+    struct Node * p = head;
+    struct Node * q = head->next;
+    while(q->data!=value && q->next!=NULL)
+    {
+        p = p->next;
+        q = q->next;
+    }
+
+    if(q->data == value)
+    {
+        p->next = q->next;
+        free(q);
+    }
+    return(head);
+}
